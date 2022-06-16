@@ -40,8 +40,10 @@ function Form() {
   const handleOnSubmit = (e) => {
     e.preventDefault()
     console.log(formData)
-    if (editPost) dispatch(updatePost(formData, editPost._id))
-    else dispatch(createPost(formData))
+    if (editPost) {
+      dispatch(updatePost(formData, editPost._id))
+      dispatch(setEditPost(null))
+    } else dispatch(createPost(formData))
     setFormData({
       creator: '',
       title: '',
@@ -78,7 +80,7 @@ function Form() {
   const { creator, title, message, tags } = formData
 
   return (
-    <div className='w-[30%] rounded-lg shadow-lg p-6 bg-white'>
+    <div className='md:w-[40%] lg:w-[30%] rounded-lg shadow-lg p-6 bg-white'>
       <p className='text-center mb-4'>
         {!editPost ? 'Creating a Memory' : 'Editing Memory'}
       </p>
