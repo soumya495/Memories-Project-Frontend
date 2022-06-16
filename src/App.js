@@ -10,6 +10,9 @@ import Navbar from './components/Navbar'
 import Posts from './components/Posts/Posts'
 import Form from './components/Form/Form'
 
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 function App() {
   const dispatch = useDispatch()
 
@@ -26,6 +29,7 @@ function App() {
         <Posts />
         <Form />
       </div>
+      <ToastContainer position='top-center' />
     </div>
   )
 }

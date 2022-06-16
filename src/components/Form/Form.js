@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import FileBase from 'react-file-base64'
+import { toast } from 'react-toastify'
 
 import { createPost, updatePost } from '../../services/posts'
 import { setEditPost } from '../../slices/postsSlice'
@@ -43,7 +44,11 @@ function Form() {
     if (editPost) {
       dispatch(updatePost(formData, editPost._id))
       dispatch(setEditPost(null))
-    } else dispatch(createPost(formData))
+      toast.success('Edited Successfully!')
+    } else {
+      dispatch(createPost(formData))
+      toast.success('Posted Successfully!')
+    }
     setFormData({
       creator: '',
       title: '',
