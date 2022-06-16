@@ -1,10 +1,12 @@
-import { BiLike } from 'react-icons/bi'
+import { AiOutlineLike, AiFillLike } from 'react-icons/ai'
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 
 import { setEditPost } from '../../../slices/postsSlice'
+import { deletePost, updatePost } from '../../../services/posts'
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
@@ -13,6 +15,16 @@ function Post({ post }) {
   const { createdAt, creator, likeCount, message, selectedFile, tags, title } =
     post
   const dispatch = useDispatch()
+
+  const handleOnLike = () => {
+    let updatedPost = {}
+    if (likeCount > 0) {
+      updatedPost = { ...post, likeCount: 0 }
+    } else {
+      updatedPost = { ...post, likeCount: likeCount + 1 }
+    }
+    dispatch(updatePost(updatedPost, post._id))
+  }
 
   return (
     <div className='w-11/12 max-w-[280px] bg-white rounded-lg overflow-hidden shadow-lg'>
@@ -59,11 +71,24 @@ function Post({ post }) {
           </p>
         </div>
         <div className='flex justify-between items-center flex-wrap'>
-          <div className='flex items-center space-x-1 cursor-pointer'>
-            <BiLike className='text-blue-600' />
+          <div
+            className='flex items-center space-x-1 cursor-pointer'
+            onClick={handleOnLike}
+          >
+            {likeCount === 0 ? (
+              <AiOutlineLike className='text-blue-600' />
+            ) : (
+              <AiFillLike className='text-blue-600' />
+            )}
             <p>{likeCount}</p>
           </div>
-          <AiOutlineDelete className='text-blue-600 cursor-pointer text-lg' />
+          <AiOutlineDelete
+            className='text-blue-600 cursor-pointer text-lg'
+            onClick={() => {
+              dispatch(deletePost(post._id))
+              toast.success('Deleted Successfully!')
+            }}
+          />
         </div>
       </div>
     </div>

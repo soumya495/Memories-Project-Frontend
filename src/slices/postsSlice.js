@@ -23,10 +23,18 @@ const postsSlice = createSlice({
     setEditPost(state, value) {
       state.editPost = value.payload
     },
+    setDeletedPost(state, value) {
+      state.posts = state.posts.filter((post) => post._id !== value.payload)
+    },
   },
 })
 
-export const { setPosts, addNewPost, setEditPost, setUpdatePost } =
-  postsSlice.actions
+export const {
+  setPosts,
+  addNewPost,
+  setEditPost,
+  setUpdatePost,
+  setDeletedPost,
+} = postsSlice.actions
 
 export default postsSlice.reducer
