@@ -1,7 +1,10 @@
 import { BiLike } from 'react-icons/bi'
-import { AiOutlineDelete } from 'react-icons/ai'
+import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
+import { useDispatch } from 'react-redux'
+
+import { setEditPost } from '../../../slices/postsSlice'
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
@@ -9,20 +12,29 @@ const timeAgo = new TimeAgo('en-US')
 function Post({ post }) {
   const { createdAt, creator, likeCount, message, selectedFile, tags, title } =
     post
+  const dispatch = useDispatch()
 
   return (
     <div className='w-11/12 max-w-[280px] bg-white rounded-lg overflow-hidden shadow-lg'>
       <div className='h-[140px] relative after:absolute after:z-40 after:contents-[``] after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-b after:from-[rgba(0,0,0,0.6)] after:to-[rgba(0,0,0,0.1)]'>
         <img
-          src={selectedFile}
+          src={
+            selectedFile !== ''
+              ? selectedFile
+              : '../../../../Assets/placeholder.webp'
+          }
           alt='post'
           className='h-full w-full object-cover'
         />
-        <div className='absolute z-50 top-4 left-4'>
+        <div className='absolute flex justify-between items-center z-50 top-4 left-4 right-4'>
           <div className='text-white'>
             <p>{creator}</p>
             <p>{timeAgo.format(new Date(createdAt))}</p>
           </div>
+          <AiOutlineEdit
+            className='text-white text-xl cursor-pointer transition-all duration-300 hover:scale-125'
+            onClick={() => dispatch(setEditPost(post))}
+          />
         </div>
       </div>
       <div className='p-4 flex flex-col justify-between'>

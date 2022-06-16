@@ -1,11 +1,13 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import FileBase from 'react-file-base64'
 
-import { createPost } from '../../services/posts'
+import { createPost, updatePost } from '../../services/posts'
+import { setEditPost } from '../../slices/postsSlice'
 
 function Form() {
   const dispatch = useDispatch()
+  const { editPost } = useSelector((state) => state.posts)
 
   const [formData, setFormData] = useState({
     creator: '',
@@ -14,6 +16,19 @@ function Form() {
     tags: '',
     selectedFile: '',
   })
+
+  useEffect(() => {
+    if (editPost) {
+      console.log(editPost)
+      setFormData({
+        creator: editPost.creator,
+        title: editPost.title,
+        message: editPost.message,
+        tags: editPost.tags,
+        selectedFile: editPost.selectedFile,
+      })
+    }
+  }, [editPost])
 
   const handleOnChange = (e) => {
     setFormData((prev) => ({
@@ -25,7 +40,8 @@ function Form() {
   const handleOnSubmit = (e) => {
     e.preventDefault()
     console.log(formData)
-    dispatch(createPost(formData))
+    if (editPost) dispatch(updatePost(formData, editPost._id))
+    else dispatch(createPost(formData))
     setFormData({
       creator: '',
       title: '',
@@ -47,11 +63,25 @@ function Form() {
     })
   }
 
+  const handleCancel = (e) => {
+    e.preventDefault()
+    dispatch(setEditPost(null))
+    setFormData({
+      creator: '',
+      title: '',
+      message: '',
+      tags: '',
+      selectedFile: '',
+    })
+  }
+
   const { creator, title, message, tags } = formData
 
   return (
     <div className='w-[30%] rounded-lg shadow-lg p-6 bg-white'>
-      <p className='text-center mb-4'>Creating a Memory</p>
+      <p className='text-center mb-4'>
+        {!editPost ? 'Creating a Memory' : 'Editing Memory'}
+      </p>
       <form
         autoComplete='off'
         onSubmit={handleOnSubmit}
@@ -60,6 +90,7 @@ function Form() {
         <input
           type='text'
           name='creator'
+          required
           value={creator}
           onChange={handleOnChange}
           placeholder='Creator'
@@ -68,6 +99,7 @@ function Form() {
         <input
           type='text'
           name='title'
+          required
           value={title}
           onChange={handleOnChange}
           placeholder='Title'
@@ -75,6 +107,7 @@ function Form() {
         />
         <textarea
           name='message'
+          required
           value={message}
           onChange={handleOnChange}
           placeholder='Message'
@@ -83,6 +116,7 @@ function Form() {
         <input
           type='text'
           name='tags'
+          required
           value={tags}
           onChange={handleOnChange}
           placeholder='Tags'
@@ -100,14 +134,24 @@ function Form() {
             type='submit'
             className='bg-pink-700 text-white cursor-pointer p-2 rounded-md'
           >
-            Submit
+            {!editPost ? 'Submit' : 'Edit'}
           </button>
-          <button
-            onClick={handleClear}
-            className='bg-blue-600 text-white p-1 rounded-md'
-          >
-            Clear
-          </button>
+
+          {!editPost ? (
+            <button
+              onClick={handleClear}
+              className='bg-blue-600 text-white p-1 rounded-md'
+            >
+              Clear
+            </button>
+          ) : (
+            <button
+              onClick={handleCancel}
+              className='bg-blue-600 text-white p-1 rounded-md'
+            >
+              Cancel
+            </button>
+          )}
         </div>
       </form>
     </div>

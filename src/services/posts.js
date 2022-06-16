@@ -1,6 +1,6 @@
 import * as api from '../api'
 
-import { setPosts, addNewPost } from '../slices/postsSlice'
+import { setPosts, addNewPost, setUpdatePost } from '../slices/postsSlice'
 
 export function getPosts() {
   return async (dispatch) => {
@@ -20,6 +20,17 @@ export function createPost(newPost) {
       dispatch(addNewPost(data))
     } catch (error) {
       console.log('create post error...........', error.message)
+    }
+  }
+}
+
+export function updatePost(updatedPost, id) {
+  return async (dispatch) => {
+    try {
+      const { data } = await api.updatePost(updatedPost, id)
+      dispatch(setUpdatePost(data))
+    } catch (error) {
+      console.log('update post error...........', error.message)
     }
   }
 }
