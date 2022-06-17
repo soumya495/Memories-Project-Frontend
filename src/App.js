@@ -1,34 +1,24 @@
-import { BrowserRouter as Router, Routes } from 'react-router-dom'
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-
-import { getPosts } from './services/posts'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import './App.css'
 
 import Navbar from './components/Navbar'
-import Posts from './components/Posts/Posts'
-import Form from './components/Form/Form'
+import Home from './Pages/Home'
 
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Auth from './Pages/Auth'
 
 function App() {
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(getPosts())
-  }, [])
-
   return (
     <div className='container w-[95%] max-w-[1400px] mx-auto'>
       <Router>
         <Navbar />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/auth' element={<Auth />} />
+        </Routes>
       </Router>
-      <div className='flex flex-col-reverse items-center md:flex-row md:items-start justify-between md:space-x-6'>
-        <Posts />
-        <Form />
-      </div>
       <ToastContainer position='top-center' />
     </div>
   )

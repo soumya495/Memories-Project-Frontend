@@ -140,7 +140,7 @@ function Form() {
         <div className='w-full flex flex-col space-y-2'>
           <button
             type='submit'
-            className='bg-pink-700 text-white cursor-pointer p-2 rounded-md'
+            className='bg-pink-700 text-white cursor-pointer p-2 rounded-md uppercase'
           >
             {!editPost ? 'Submit' : 'Edit'}
           </button>
