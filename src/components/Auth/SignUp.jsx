@@ -1,9 +1,16 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
 import { toast } from 'react-toastify'
 import { FcGoogle } from 'react-icons/fc'
 import { FaGithub, FaFacebookF } from 'react-icons/fa'
 
+import { signUp } from '../../services/auth'
+
 function SignUp() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -27,6 +34,7 @@ function SignUp() {
       return
     }
     console.log('Sign Up Data.............', formData)
+    dispatch(signUp(formData, navigate))
   }
 
   return (
@@ -66,7 +74,7 @@ function SignUp() {
         type='password'
         name='confirmPassword'
         required
-        value={password}
+        value={confirmPassword}
         onChange={handleOnChange}
         placeholder='Confirm Password'
         className='border-[1px] border-slate-400 p-2 rounded-md'

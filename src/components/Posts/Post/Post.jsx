@@ -2,7 +2,7 @@ import { AiOutlineLike, AiFillLike } from 'react-icons/ai'
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
 import { setEditPost } from '../../../slices/postsSlice'
@@ -12,18 +12,40 @@ TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
 function Post({ post }) {
-  const { createdAt, creator, likeCount, message, selectedFile, tags, title } =
-    post
+  const {
+    createdAt,
+    creator,
+    name,
+    likes,
+    message,
+    selectedFile,
+    tags,
+    title,
+  } = post
   const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.auth)
 
   const handleOnLike = () => {
+    if (!user) {
+      toast.error('You are not Logged In!')
+      return
+    }
     let updatedPost = {}
-    if (likeCount > 0) {
-      updatedPost = { ...post, likeCount: 0 }
+    const existingLike = likes.filter((like) => like === user.result._id)
+    if (existingLike.length === 0) {
+      updatedPost = { ...post, likes: [...likes, user.result._id] }
     } else {
-      updatedPost = { ...post, likeCount: likeCount + 1 }
+      updatedPost = {
+        ...post,
+        likes: likes.filter((like) => like !== user.result._id),
+      }
     }
     dispatch(updatePost(updatedPost, post._id))
+  }
+
+  const handleDelete = () => {
+    dispatch(deletePost(post._id))
+    toast.success('Deleted Successfully!')
   }
 
   return (
@@ -40,13 +62,15 @@ function Post({ post }) {
         />
         <div className='absolute flex justify-between items-center z-50 top-4 left-4 right-4'>
           <div className='text-white'>
-            <p>{creator}</p>
-            <p>{timeAgo.format(new Date(createdAt))}</p>
+            <p>{name}</p>
+            <p className='text-sm'>{timeAgo.format(new Date(createdAt))}</p>
           </div>
-          <AiOutlineEdit
-            className='text-white text-xl cursor-pointer transition-all duration-300 hover:scale-125'
-            onClick={() => dispatch(setEditPost(post))}
-          />
+          {user && user.result._id === creator && (
+            <AiOutlineEdit
+              className='text-white text-xl cursor-pointer transition-all duration-300 hover:scale-125'
+              onClick={() => dispatch(setEditPost(post))}
+            />
+          )}
         </div>
       </div>
       <div className='p-4 flex flex-col justify-between'>
@@ -77,20 +101,19 @@ function Post({ post }) {
             className='flex items-center space-x-1 cursor-pointer'
             onClick={handleOnLike}
           >
-            {likeCount === 0 ? (
-              <AiOutlineLike className='text-blue-600' />
-            ) : (
+            {user && likes.length > 0 && likes.includes(user.result._id) ? (
               <AiFillLike className='text-blue-600' />
+            ) : (
+              <AiOutlineLike className='text-blue-600' />
             )}
-            <p>{likeCount}</p>
+            <p>{likes.length}</p>
           </div>
-          <AiOutlineDelete
-            className='text-blue-600 cursor-pointer text-lg'
-            onClick={() => {
-              dispatch(deletePost(post._id))
-              toast.success('Deleted Successfully!')
-            }}
-          />
+          {user && user.result._id === creator && (
+            <AiOutlineDelete
+              className='text-blue-600 cursor-pointer text-lg'
+              onClick={handleDelete}
+            />
+          )}
         </div>
       </div>
     </div>

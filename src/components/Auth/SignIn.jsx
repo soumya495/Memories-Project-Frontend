@@ -1,9 +1,15 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { FcGoogle } from 'react-icons/fc'
 import { FaGithub, FaFacebookF } from 'react-icons/fa'
 
+import { signIn } from '../../services/auth'
+
 function SignIn() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,6 +27,7 @@ function SignIn() {
   const handleOnSubmit = (e) => {
     e.preventDefault()
     console.log('Sign In Data.............', formData)
+    dispatch(signIn(formData, navigate))
   }
 
   return (

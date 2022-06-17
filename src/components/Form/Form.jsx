@@ -9,9 +9,9 @@ import { setEditPost } from '../../slices/postsSlice'
 function Form() {
   const dispatch = useDispatch()
   const { editPost } = useSelector((state) => state.posts)
+  const { user } = useSelector((state) => state.auth)
 
   const [formData, setFormData] = useState({
-    creator: '',
     title: '',
     message: '',
     tags: '',
@@ -22,7 +22,6 @@ function Form() {
     if (editPost) {
       console.log(editPost)
       setFormData({
-        creator: editPost.creator,
         title: editPost.title,
         message: editPost.message,
         tags: editPost.tags,
@@ -40,17 +39,27 @@ function Form() {
 
   const handleOnSubmit = (e) => {
     e.preventDefault()
+    if (!user) {
+      toast.error('You are not Logged In!')
+      return
+    }
     console.log(formData)
+
     if (editPost) {
       dispatch(updatePost(formData, editPost._id))
       dispatch(setEditPost(null))
       toast.success('Edited Successfully!')
     } else {
-      dispatch(createPost(formData))
+      const post = {
+        ...formData,
+        name: user.result.name,
+        creator: user.result._id,
+        createdAt: new Date().toISOString(),
+      }
+      dispatch(createPost(post))
       toast.success('Posted Successfully!')
     }
     setFormData({
-      creator: '',
       title: '',
       message: '',
       tags: '',
@@ -62,7 +71,6 @@ function Form() {
   const handleClear = (e) => {
     e.preventDefault()
     setFormData({
-      creator: '',
       title: '',
       message: '',
       tags: '',
@@ -74,7 +82,6 @@ function Form() {
     e.preventDefault()
     dispatch(setEditPost(null))
     setFormData({
-      creator: '',
       title: '',
       message: '',
       tags: '',
@@ -82,7 +89,7 @@ function Form() {
     })
   }
 
-  const { creator, title, message, tags } = formData
+  const { title, message, tags } = formData
 
   return (
     <div className='w-[90%] max-w-md md:w-[40%] lg:w-[30%] rounded-lg shadow-lg mb-6 md:mb-0 p-6 bg-white'>
@@ -96,17 +103,9 @@ function Form() {
       >
         <input
           type='text'
-          name='creator'
-          required
-          value={creator}
-          onChange={handleOnChange}
-          placeholder='Creator'
-          className='border-[1px] border-slate-400 p-2 rounded-md'
-        />
-        <input
-          type='text'
           name='title'
           required
+          disabled={!user}
           value={title}
           onChange={handleOnChange}
           maxLength={60}
@@ -116,6 +115,7 @@ function Form() {
         <textarea
           name='message'
           required
+          disabled={!user}
           value={message}
           onChange={handleOnChange}
           placeholder='Message'
@@ -125,9 +125,11 @@ function Form() {
           type='text'
           name='tags'
           required
+          disabled={!user}
           value={tags}
           onChange={handleOnChange}
-          placeholder='Tags'
+          maxLength={30}
+          placeholder='Tags (Space Separated)'
           className='border-[1px] border-slate-400 p-2 rounded-md'
         />
         <FileBase
@@ -148,6 +150,7 @@ function Form() {
           {!editPost ? (
             <button
               onClick={handleClear}
+              disabled={!user}
               className='bg-blue-600 text-white p-1 rounded-md'
             >
               Clear
@@ -155,6 +158,7 @@ function Form() {
           ) : (
             <button
               onClick={handleCancel}
+              disabled={!user}
               className='bg-blue-600 text-white p-1 rounded-md'
             >
               Cancel
