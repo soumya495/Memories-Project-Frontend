@@ -85,7 +85,7 @@ function Form() {
   const { creator, title, message, tags } = formData
 
   return (
-    <div className='md:w-[40%] lg:w-[30%] rounded-lg shadow-lg p-6 bg-white'>
+    <div className='w-[90%] max-w-md md:w-[40%] lg:w-[30%] rounded-lg shadow-lg mb-6 md:mb-0 p-6 bg-white'>
       <p className='text-center mb-4'>
         {!editPost ? 'Creating a Memory' : 'Editing Memory'}
       </p>
@@ -109,6 +109,7 @@ function Form() {
           required
           value={title}
           onChange={handleOnChange}
+          maxLength={60}
           placeholder='Title'
           className='border-[1px] border-slate-400 p-2 rounded-md'
         />

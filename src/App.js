@@ -25,7 +25,7 @@ function App() {
       <Router>
         <Navbar />
       </Router>
-      <div className='flex items-start space-x-6'>
+      <div className='flex flex-col-reverse items-center md:flex-row md:items-start justify-between md:space-x-6'>
         <Posts />
         <Form />
       </div>
