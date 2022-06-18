@@ -5,13 +5,22 @@ import {
   addNewPost,
   setUpdatePost,
   setDeletedPost,
+  setPageInfo,
 } from '../slices/postsSlice'
 
-export function getPosts() {
+export function getPosts(pageNumber = 1) {
   return async (dispatch) => {
     try {
-      const { data } = await api.fetchPosts()
-      dispatch(setPosts(data))
+      const { data } = await api.fetchPosts(pageNumber)
+      dispatch(setPosts(data.results))
+      let pageInfo = {}
+      if (data.next) {
+        pageInfo.next = data.next
+      }
+      if (data.previous) {
+        pageInfo.previous = data.previous
+      }
+      dispatch(setPageInfo(pageInfo))
     } catch (error) {
       console.log('get posts error............', error)
     }

@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   posts: [],
   editPost: null,
+  pageInfo: null,
 }
 
 const postsSlice = createSlice({
@@ -26,6 +27,9 @@ const postsSlice = createSlice({
     setDeletedPost(state, value) {
       state.posts = state.posts.filter((post) => post._id !== value.payload)
     },
+    setPageInfo(state, value) {
+      state.pageInfo = value.payload
+    },
   },
 })
 
@@ -35,6 +39,7 @@ export const {
   setEditPost,
   setUpdatePost,
   setDeletedPost,
+  setPageInfo,
 } = postsSlice.actions
 
 export default postsSlice.reducer

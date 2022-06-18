@@ -101,7 +101,7 @@ function Form() {
   const { title, message, tags } = formData
 
   return (
-    <div className='w-[90%] max-w-md md:w-[40%] lg:w-[30%] rounded-lg shadow-lg mb-6 md:mb-0 p-6 bg-white'>
+    <div className='w-full rounded-lg shadow-lg p-6 bg-white'>
       <p className='text-center mb-4'>
         {!editPost ? 'Creating a Memory' : 'Editing Memory'}
       </p>

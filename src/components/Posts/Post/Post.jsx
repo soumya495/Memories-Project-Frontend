@@ -112,7 +112,7 @@ function Post({ post }) {
             commodo ligula. */}
           </p>
         </div>
-        <div className='flex justify-between items-center flex-wrap'>
+        <div className='flex justify-between items-center flex-wrap mt-2'>
           <div
             className='flex items-center space-x-1 cursor-pointer'
             onClick={handleOnLike}
