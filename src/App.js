@@ -8,6 +8,7 @@ import Home from './Pages/Home'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Auth from './Pages/Auth'
+import PrivateRoute from './PrivateRoute'
 
 function App() {
   return (
@@ -16,7 +17,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/auth' element={<Auth />} />
+          <Route path='/auth' element={<PrivateRoute />}>
+            <Route path='/auth' element={<Auth />} />
+          </Route>
         </Routes>
       </Router>
       <ToastContainer position='top-center' />
