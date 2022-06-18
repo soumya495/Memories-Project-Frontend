@@ -5,6 +5,8 @@ import { toast } from 'react-toastify'
 
 import { createPost, updatePost } from '../../services/posts'
 import { setEditPost } from '../../slices/postsSlice'
+import { logUserOut } from '../../slices/authSlice'
+import { checkUserToken } from '../../services/checkUserToken'
 
 function Form() {
   const dispatch = useDispatch()
@@ -44,6 +46,13 @@ function Form() {
       return
     }
     console.log(formData)
+
+    // checks if login token is still valid
+    if (!checkUserToken()) {
+      toast.info('Session Expired!')
+      dispatch(logUserOut())
+      return
+    }
 
     if (editPost) {
       dispatch(updatePost(formData, editPost._id))

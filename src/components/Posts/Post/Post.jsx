@@ -7,6 +7,8 @@ import { toast } from 'react-toastify'
 
 import { setEditPost } from '../../../slices/postsSlice'
 import { deletePost, updatePost } from '../../../services/posts'
+import { logUserOut } from '../../../slices/authSlice'
+import { checkUserToken } from '../../../services/checkUserToken'
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
@@ -30,6 +32,14 @@ function Post({ post }) {
       toast.error('You are not Logged In!')
       return
     }
+
+    // checks if login token is still valid
+    if (!checkUserToken()) {
+      toast.info('Session Expired!')
+      dispatch(logUserOut())
+      return
+    }
+
     let updatedPost = {}
     const existingLike = likes.filter((like) => like === user.result._id)
     if (existingLike.length === 0) {
@@ -44,6 +54,12 @@ function Post({ post }) {
   }
 
   const handleDelete = () => {
+    // checks if login token is still valid
+    if (!checkUserToken()) {
+      toast.info('Session Expired!')
+      dispatch(logUserOut())
+      return
+    }
     dispatch(deletePost(post._id))
     toast.success('Deleted Successfully!')
   }
