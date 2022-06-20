@@ -1,17 +1,26 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import FileBase from 'react-file-base64'
+// import FileBase from 'react-file-base64'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
-import { createPost, updatePost } from '../../services/posts'
+import { isImage } from '../../validImage'
+
+import { createPost, getPosts, updatePost } from '../../services/posts'
+import { setLoading } from '../../slices/loaderSlice'
 import { setEditPost } from '../../slices/postsSlice'
 import { logUserOut } from '../../slices/authSlice'
 import { checkUserToken } from '../../services/checkUserToken'
+import Loader from '../Loader'
 
 function Form() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { editPost } = useSelector((state) => state.posts)
+  const { loading } = useSelector((state) => state.loading)
   const { user } = useSelector((state) => state.auth)
+
+  // console.log(JSON.parse(localStorage.getItem('user')).token)
 
   const [formData, setFormData] = useState({
     title: '',
@@ -39,7 +48,15 @@ function Form() {
     }))
   }
 
-  const handleOnSubmit = (e) => {
+  const handleImageUpload = (e) => {
+    if (!isImage(e.target.files[0])) {
+      toast.error('Not Valid Image')
+      return
+    }
+    setFormData((prev) => ({ ...prev, selectedFile: e.target.files[0] }))
+  }
+
+  const handleOnSubmit = async (e) => {
     e.preventDefault()
     if (!user) {
       toast.error('You are not Logged In!')
@@ -54,20 +71,90 @@ function Form() {
       return
     }
 
+    dispatch(setLoading(true))
+
     if (editPost) {
-      dispatch(updatePost(formData, editPost._id))
-      dispatch(setEditPost(null))
-      toast.success('Edited Successfully!')
-    } else {
-      const post = {
-        ...formData,
-        name: user.result.name,
-        creator: user.result._id,
-        createdAt: new Date().toISOString(),
+      if (editPost.selectedFile === formData.selectedFile) {
+        dispatch(updatePost(formData, editPost._id))
+        dispatch(setEditPost(null))
+        dispatch(setLoading(false))
+        toast.success('Edited Successfully!')
+      } else {
+        const data = new FormData()
+
+        data.append('file', formData.selectedFile)
+        data.append('upload_preset', 'memories-project')
+        data.append('cloud_name', 'smya22')
+
+        fetch('https://api.cloudinary.com/v1_1/smya22/image/upload', {
+          method: 'post',
+          body: data,
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            dispatch(
+              updatePost(
+                {
+                  ...formData,
+                  selectedFile: data.secure_url,
+                },
+                editPost._id
+              )
+            )
+            dispatch(setEditPost(null))
+            dispatch(setLoading(false))
+            toast.success('Edited Successfully!')
+          })
+          .catch((err) => {
+            dispatch(setLoading(false))
+            console.log('Cloudinary upload error.........', err)
+          })
       }
-      dispatch(createPost(post))
-      toast.success('Posted Successfully!')
+    } else {
+      if (!formData.selectedFile) {
+        const post = {
+          ...formData,
+          name: user.result.name,
+          creator: user.result._id,
+          createdAt: new Date().toISOString(),
+        }
+        dispatch(createPost(post))
+        dispatch(getPosts(1))
+        navigate('/posts')
+        dispatch(setLoading(false))
+        toast.success('Posted Successfully!')
+        return
+      }
+      const data = new FormData()
+      data.append('file', formData.selectedFile)
+      data.append('upload_preset', 'memories-project')
+      data.append('cloud_name', 'smya22')
+
+      fetch('https://api.cloudinary.com/v1_1/smya22/image/upload', {
+        method: 'post',
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          const post = {
+            ...formData,
+            name: user.result.name,
+            creator: user.result._id,
+            selectedFile: data.secure_url,
+            createdAt: new Date().toISOString(),
+          }
+          dispatch(createPost(post))
+          navigate('/posts')
+          dispatch(setLoading(false))
+          toast.success('Posted Successfully!')
+        })
+        .catch((err) => {
+          dispatch(setLoading(false))
+          toast.error('Something Went Wrong!')
+          console.log('Cloudinary upload error.........', err)
+        })
     }
+
     setFormData({
       title: '',
       message: '',
@@ -100,8 +187,16 @@ function Form() {
 
   const { title, message, tags } = formData
 
+  if (loading) {
+    return (
+      <div className='w-full min-h-[400px] flex justify-center items-center rounded-lg shadow-lg p-6 transparentCard'>
+        <Loader color='#BE185D' />
+      </div>
+    )
+  }
+
   return (
-    <div className='w-full rounded-lg shadow-lg p-6 bg-white'>
+    <div className='w-full rounded-lg shadow-lg p-6 transparentCard'>
       <p className='text-center mb-4'>
         {!editPost ? 'Creating a Memory' : 'Editing Memory'}
       </p>
@@ -119,7 +214,7 @@ function Form() {
           onChange={handleOnChange}
           maxLength={60}
           placeholder='Title'
-          className='border-[1px] border-slate-400 p-2 rounded-md'
+          className='border-[1px] border-slate-400 p-2 rounded-md bg-transparent placeholder:text-gray-700'
         />
         <textarea
           name='message'
@@ -128,7 +223,7 @@ function Form() {
           value={message}
           onChange={handleOnChange}
           placeholder='Message'
-          className='border-[1px] border-slate-400 p-2 resize-y rounded-md'
+          className='border-[1px] border-slate-400 p-2 resize-y rounded-md bg-transparent placeholder:text-gray-700'
         />
         <input
           type='text'
@@ -139,18 +234,17 @@ function Form() {
           onChange={handleOnChange}
           maxLength={30}
           placeholder='Tags (Space Separated)'
-          className='border-[1px] border-slate-400 p-2 rounded-md'
+          className='border-[1px] border-slate-400 p-2 rounded-md bg-transparent placeholder:text-gray-700'
         />
-        <FileBase
+        <input
           type='file'
-          multiple={false}
-          onDone={({ base64 }) =>
-            setFormData({ ...formData, selectedFile: base64 })
-          }
+          onChange={(e) => handleImageUpload(e)}
+          disabled={!user}
         />
         <div className='w-full flex flex-col space-y-2'>
           <button
             type='submit'
+            disabled={!user}
             className='bg-pink-700 text-white cursor-pointer p-2 rounded-md uppercase'
           >
             {!editPost ? 'Submit' : 'Edit'}

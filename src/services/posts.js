@@ -8,8 +8,11 @@ import {
   setPageInfo,
 } from '../slices/postsSlice'
 
+import { setLoading } from '../slices/loaderSlice'
+
 export function getPosts(pageNumber = 1) {
   return async (dispatch) => {
+    dispatch(setLoading(true))
     try {
       const { data } = await api.fetchPosts(pageNumber)
       dispatch(setPosts(data.results))
@@ -21,8 +24,10 @@ export function getPosts(pageNumber = 1) {
         pageInfo.previous = data.previous
       }
       dispatch(setPageInfo(pageInfo))
+      dispatch(setLoading(false))
     } catch (error) {
       console.log('get posts error............', error)
+      dispatch(setLoading(false))
     }
   }
 }

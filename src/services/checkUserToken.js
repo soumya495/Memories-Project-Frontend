@@ -1,16 +1,10 @@
-import decode from 'jwt-decode'
-
-const token = localStorage.getItem('user')
-  ? JSON.parse(localStorage.getItem('user')).token
-  : null
+import { isExpired } from 'react-jwt'
 
 export function checkUserToken() {
-  if (!token) return false
+  const token = localStorage.getItem('user')
+    ? JSON.parse(localStorage.getItem('user')).token
+    : null
 
-  const decodedToken = decode(token)
-
-  if (decodedToken.exp * 1000 < new Date().getTime()) {
-    return false
-  }
-  return true
+  if (!token || isExpired(token)) return false
+  else return true
 }

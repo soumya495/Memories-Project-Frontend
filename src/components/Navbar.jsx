@@ -11,8 +11,8 @@ function Navbar() {
   console.log(user)
 
   return (
-    <nav className='flex justify-between items-center p-6 shadow-md my-6 rounded-lg bg-white'>
-      <NavLink to='/'>
+    <nav className='flex justify-between items-center p-6 shadow-md my-6 rounded-lg transparentCard'>
+      <NavLink to='/posts'>
         <div className='flex flex-col items-center'>
           <p className='text-xl font-semibold leading-6 text-blue-600 uppercase'>
             Memories

@@ -65,8 +65,8 @@ function Post({ post }) {
   }
 
   return (
-    <div className='w-11/12 max-w-[280px] bg-white rounded-lg overflow-hidden shadow-lg'>
-      <div className='h-[140px] relative after:absolute after:z-40 after:contents-[``] after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-b after:from-[rgba(0,0,0,0.6)] after:to-[rgba(0,0,0,0.1)]'>
+    <div className='w-[95%] max-w-[280px] transparentCardBoost rounded-lg overflow-hidden shadow-lg'>
+      <div className='h-[140px] relative after:absolute after:z-40 after:contents-[``] after:top-0 after:left-0 after:w-full after:h-full after:bg-cardGradient'>
         <img
           src={
             selectedFile !== ''
@@ -93,7 +93,7 @@ function Post({ post }) {
         {tags.length && (
           <div className='flex space-x-2 flex-wrap'>
             {tags.split(' ').map((tag, index) => (
-              <p key={index} className='text-sm text-gray-400 font-normal'>
+              <p key={index} className='text-sm text-gray-500 font-normal'>
                 #{tag}
               </p>
             ))}

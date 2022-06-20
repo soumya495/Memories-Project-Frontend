@@ -9,7 +9,7 @@ function Auth() {
   const toggleState = () => setIsSignIn((prev) => !prev)
 
   return (
-    <div className='w-full max-w-sm mx-auto rounded-lg shadow-lg mb-6 md:mb-0 p-6 bg-white'>
+    <div className='w-full max-w-sm mx-auto rounded-lg shadow-lg mb-6 md:mb-0 p-6 transparentCard'>
       <p className='text-center mb-4 text-2xl font-semibold'>
         {!isSignIn ? 'Sign In' : 'Sign Up'}
       </p>
@@ -19,7 +19,7 @@ function Auth() {
           <p>
             Don't Have an Account -{' '}
             <span
-              className='font-semibold underline text-gray-400 cursor-pointer'
+              className='font-semibold underline text-gray-700 cursor-pointer'
               onClick={toggleState}
             >
               Sign Up
@@ -29,7 +29,7 @@ function Auth() {
           <p>
             Already Have an Account -{' '}
             <span
-              className='font-semibold underline text-gray-400 cursor-pointer'
+              className='font-semibold underline text-gray-700 cursor-pointer'
               onClick={toggleState}
             >
               Sign In

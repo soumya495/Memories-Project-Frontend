@@ -43,7 +43,7 @@ function SignIn() {
         value={email}
         onChange={handleOnChange}
         placeholder='Email'
-        className='border-[1px] border-slate-400 p-2 rounded-md'
+        className='border-[1px] border-slate-400 p-2 rounded-md bg-transparent placeholder:text-gray-700'
       />
       <input
         type='password'
@@ -52,7 +52,7 @@ function SignIn() {
         value={password}
         onChange={handleOnChange}
         placeholder='Password'
-        className='border-[1px] border-slate-400 p-2 rounded-md'
+        className='border-[1px] border-slate-400 p-2 rounded-md bg-transparent placeholder:text-gray-700'
       />
       <div className='flex flex-col space-y-2 mb-2'>
         <button
@@ -61,7 +61,7 @@ function SignIn() {
         >
           Sign In
         </button>
-        <p className='w-full text-center text-xl font-semibold'>OR</p>
+        {/* <p className='w-full text-center text-xl font-semibold'>OR</p>
         <div className='w-full flex justify-center space-x-2'>
           <button className='w-10 h-10 flex justify-center items-center border-[1px] border-blue-600 rounded-full'>
             <FcGoogle fontSize='1.75rem' />
@@ -72,7 +72,7 @@ function SignIn() {
           <button className='w-10 h-10 flex justify-center items-center border-[1px] border-blue-600 rounded-full'>
             <FaGithub fontSize='1.75rem' />
           </button>
-        </div>
+        </div> */}
       </div>
     </form>
   )

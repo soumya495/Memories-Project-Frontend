@@ -16,7 +16,7 @@ API.interceptors.request.use((req) => {
 
 // POSTS
 export const fetchPosts = (pageNumber) =>
-  API.get(`/posts?limit=5&page=${pageNumber}`)
+  API.get(`/posts?limit=6&page=${pageNumber}`)
 export const createPost = (newPost) => API.post(`/posts`, newPost)
 export const updatePost = (updatedPost, id) =>
   API.patch(`/posts/${id}`, updatedPost)
