@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getPosts } from '../services/posts'
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
-import Loader from './Loader'
 
 function Pagination() {
   const dispatch = useDispatch()

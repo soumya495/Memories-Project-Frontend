@@ -17,6 +17,7 @@ export function getPosts(pageNumber = 1) {
       const { data } = await api.fetchPosts(pageNumber)
       dispatch(setPosts(data.results))
       let pageInfo = {}
+      pageInfo.totalPosts = data.totalPosts
       if (data.next) {
         pageInfo.next = data.next
       }
