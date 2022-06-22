@@ -92,11 +92,12 @@ function Post({ post }) {
       <div className='p-4 flex flex-col justify-between'>
         {tags.length && (
           <div className='flex space-x-2 flex-wrap'>
-            {tags.split(' ').map((tag, index) => (
+            {tags.slice(0, 3).map((tag, index) => (
               <p key={index} className='text-sm text-gray-500 font-normal'>
                 #{tag}
               </p>
             ))}
+            {tags.length > 3 && <p>...</p>}
           </div>
         )}
         <div className='my-2 h-[110px] flex flex-col space-y-2'>

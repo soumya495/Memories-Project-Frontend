@@ -27,7 +27,7 @@ function PaginationComp() {
     navigate(`/posts?page=${pageNumber}`)
   }
 
-  if (!pageInfo) return null
+  if (!pageInfo || !pageInfo.totalPosts) return null
 
   return (
     <div>

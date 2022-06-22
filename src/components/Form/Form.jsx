@@ -12,6 +12,7 @@ import { setEditPost } from '../../slices/postsSlice'
 import { logUserOut } from '../../slices/authSlice'
 import { checkUserToken } from '../../services/checkUserToken'
 import Loader from '../Loader'
+import TagsInput from './TagsInput'
 
 function Form() {
   const dispatch = useDispatch()
@@ -22,10 +23,12 @@ function Form() {
 
   // console.log(JSON.parse(localStorage.getItem('user')).token)
 
+  const [tagInputs, setTagInputs] = useState([])
+
   const [formData, setFormData] = useState({
     title: '',
     message: '',
-    tags: '',
+    tags: tagInputs,
     selectedFile: '',
   })
 
@@ -38,10 +41,22 @@ function Form() {
         tags: editPost.tags,
         selectedFile: editPost.selectedFile,
       })
+      setTagInputs(editPost.tags)
     }
   }, [editPost])
 
+  useEffect(() => {
+    if (tagInputs.length >= 1) {
+      setFormData((prev) => ({ ...prev, tags: tagInputs }))
+    }
+  }, [tagInputs])
+
   const handleOnChange = (e) => {
+    if (!checkUserToken()) {
+      toast.info('Session Expired!')
+      dispatch(logUserOut())
+      return
+    }
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -70,6 +85,15 @@ function Form() {
       dispatch(logUserOut())
       return
     }
+
+    setTagInputs([])
+    setFormData({
+      title: '',
+      message: '',
+      tags: [],
+      selectedFile: '',
+    })
+    e.target.reset()
 
     dispatch(setLoading(true))
 
@@ -154,14 +178,6 @@ function Form() {
           console.log('Cloudinary upload error.........', err)
         })
     }
-
-    setFormData({
-      title: '',
-      message: '',
-      tags: '',
-      selectedFile: '',
-    })
-    e.target.reset()
   }
 
   const handleClear = (e) => {
@@ -172,6 +188,7 @@ function Form() {
       tags: '',
       selectedFile: '',
     })
+    setTagInputs([])
   }
 
   const handleCancel = (e) => {
@@ -225,16 +242,11 @@ function Form() {
           placeholder='Message'
           className='border-[1px] border-slate-400 p-2 resize-y rounded-md bg-transparent placeholder:text-gray-700'
         />
-        <input
-          type='text'
-          name='tags'
-          required
-          disabled={!user}
-          value={tags}
-          onChange={handleOnChange}
-          maxLength={30}
-          placeholder='Tags (Space Separated)'
-          className='border-[1px] border-slate-400 p-2 rounded-md bg-transparent placeholder:text-gray-700'
+        <TagsInput
+          tagInputs={tagInputs}
+          setTagInputs={setTagInputs}
+          user={user}
+          setFormData={setFormData}
         />
         <input
           type='file'
