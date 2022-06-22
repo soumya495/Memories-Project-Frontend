@@ -1,6 +1,6 @@
 import Posts from '../components/Posts/Posts'
 import Form from '../components/Form/Form'
-import Pagination from '../components/Pagination'
+import PaginationComp from '../components/Pagination'
 
 function Home() {
   return (
@@ -8,7 +8,7 @@ function Home() {
       <Posts />
       <div className='w-[90%] max-w-md md:w-[40%] lg:w-[30%] mb-6 md:mb-0'>
         <Form />
-        <Pagination />
+        <PaginationComp />
       </div>
     </div>
   )
