@@ -246,7 +246,6 @@ function Form() {
           tagInputs={tagInputs}
           setTagInputs={setTagInputs}
           user={user}
-          setFormData={setFormData}
         />
         <input
           type='file'

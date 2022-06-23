@@ -1,6 +1,6 @@
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 
-function TagsInput({ tagInputs, setTagInputs, user, setFormData }) {
+function TagsInput({ tagInputs, setTagInputs, user }) {
   // console.log('tag input value', tagInputs)
 
   const addTags = (e) => {
