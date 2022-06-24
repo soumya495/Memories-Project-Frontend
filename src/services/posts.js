@@ -44,6 +44,18 @@ export function createPost(newPost) {
   }
 }
 
+export function getPostsBySearch(searchQuery) {
+  return async (dispatch) => {
+    console.log(searchQuery)
+    try {
+      const { data } = await api.getPostsBySearch(searchQuery)
+      console.log('search results.........', data)
+    } catch (error) {
+      console.log('search result error...........', error)
+    }
+  }
+}
+
 export function updatePost(updatedPost, id) {
   return async (dispatch) => {
     try {

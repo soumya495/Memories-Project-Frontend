@@ -1,10 +1,26 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import TagsInput from './TagsInput'
 import { useSelector } from 'react-redux'
+import { getPostsBySearch } from '../../services/posts'
+import { useDispatch } from 'react-redux'
 
 function SearchForm() {
   const [tagInputs, setTagInputs] = useState([])
   const { user } = useSelector((state) => state.auth)
+  const inpRef = useRef()
+  const dispatch = useDispatch()
+
+  const handleSearch = () => {
+    console.log('search - 1')
+    if (!inpRef.current.value && tagInputs.length === 0) return
+    console.log('search - 2')
+    const searchQuery = {
+      title: inpRef.current.value,
+      tags: tagInputs.join(','),
+    }
+    dispatch(getPostsBySearch(searchQuery))
+    console.log('search data.........', searchQuery)
+  }
 
   return (
     <div className='w-full rounded-lg shadow-lg p-6 mb-6 space-y-4 transparentCard'>
@@ -12,6 +28,7 @@ function SearchForm() {
         type='search'
         placeholder='Search Memories'
         disabled={!user}
+        ref={inpRef}
         className='border-[1px] w-full border-slate-400 p-2 rounded-md bg-transparent placeholder:text-gray-700'
       />
       <TagsInput
@@ -22,6 +39,7 @@ function SearchForm() {
       <button
         disabled={!user}
         className='bg-blue-500 text-white w-full p-2 rounded-md'
+        onClick={handleSearch}
       >
         Search Memories
       </button>

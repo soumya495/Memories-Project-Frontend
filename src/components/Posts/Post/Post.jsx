@@ -104,7 +104,7 @@ function Post({ post }) {
           <h4 className='font-semibold text-lg leading-5'>
             {title.length > 30 ? `${title.substring(0, 30) + '...'}` : title}
           </h4>
-          <p className='text-gray-600 leading-5'>
+          <p className='text-gray-600 leading-5 break-words'>
             {message.length > 80
               ? `${message.substring(0, 80) + '...'}`
               : message}

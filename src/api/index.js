@@ -17,9 +17,19 @@ API.interceptors.request.use((req) => {
 // POSTS
 export const fetchPosts = (pageNumber) =>
   API.get(`/posts?limit=6&page=${pageNumber}`)
+
 export const createPost = (newPost) => API.post(`/posts`, newPost)
+
+export const getPostsBySearch = (searchQuery) =>
+  API.get(
+    `posts/search?searchQuery=${searchQuery.title || 'none'}&tags=${
+      searchQuery.tags
+    }`
+  )
+
 export const updatePost = (updatedPost, id) =>
   API.patch(`/posts/${id}`, updatedPost)
+
 export const deletePost = (id) => {
   API.delete(`/posts/${id}`)
 }
