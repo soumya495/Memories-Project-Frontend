@@ -26,6 +26,8 @@ function SearchForm() {
         searchQuery.tags || 'none'
       }`
     )
+    inpRef.current.value = ''
+    setTagInputs([])
     console.log('search data.........', searchQuery)
   }
 

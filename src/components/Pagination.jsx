@@ -38,8 +38,9 @@ function PaginationComp() {
           'title'
         )}&tags=${searchParams.get('tags')}`
       )
+    } else {
+      navigate(`/posts?page=${pageNumber}`)
     }
-    navigate(`/posts?page=${pageNumber}`)
   }
 
   if (!pageInfo || !pageInfo.totalPosts) return null

@@ -33,6 +33,11 @@ function Form() {
   })
 
   useEffect(() => {
+    if (!checkUserToken()) {
+      toast.info('Session Expired!')
+      dispatch(logUserOut())
+      return
+    }
     if (editPost) {
       console.log(editPost)
       setFormData({

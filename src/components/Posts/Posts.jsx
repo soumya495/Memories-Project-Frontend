@@ -5,7 +5,7 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
 function Posts() {
-  const { posts } = useSelector((state) => state.posts)
+  const { posts, pageInfo } = useSelector((state) => state.posts)
   const { loading } = useSelector((state) => state.loading)
   const [searchParams, setSearchParams] = useSearchParams()
   const location = useLocation()
@@ -64,7 +64,8 @@ function Posts() {
       <div className='w-11/12 md:w-[60%] lg:w-[70%] flex flex-col gap-y-4'>
         <div className='w-full'>
           <h3 className='text-3xl font-semibold text-blue-600'>
-            {posts.length} Memor{posts.length > 1 ? 'ies' : 'y'} Found
+            {pageInfo.totalPosts} Memor{pageInfo.totalPosts > 1 ? 'ies' : 'y'}{' '}
+            Found
           </h3>
           <Link
             to='/posts'
