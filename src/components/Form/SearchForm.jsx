@@ -3,12 +3,14 @@ import TagsInput from './TagsInput'
 import { useSelector } from 'react-redux'
 import { getPostsBySearch } from '../../services/posts'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 function SearchForm() {
   const [tagInputs, setTagInputs] = useState([])
   const { user } = useSelector((state) => state.auth)
   const inpRef = useRef()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleSearch = () => {
     console.log('search - 1')
@@ -18,7 +20,12 @@ function SearchForm() {
       title: inpRef.current.value,
       tags: tagInputs.join(','),
     }
-    dispatch(getPostsBySearch(searchQuery))
+    dispatch(getPostsBySearch(searchQuery, 1))
+    navigate(
+      `/posts?page=1&title=${searchQuery.title || 'none'}&tags=${
+        searchQuery.tags || 'none'
+      }`
+    )
     console.log('search data.........', searchQuery)
   }
 

@@ -20,11 +20,11 @@ export const fetchPosts = (pageNumber) =>
 
 export const createPost = (newPost) => API.post(`/posts`, newPost)
 
-export const getPostsBySearch = (searchQuery) =>
+export const getPostsBySearch = (searchQuery, page) =>
   API.get(
     `posts/search?searchQuery=${searchQuery.title || 'none'}&tags=${
       searchQuery.tags
-    }`
+    }&limit=6&page=${page}`
   )
 
 export const updatePost = (updatedPost, id) =>

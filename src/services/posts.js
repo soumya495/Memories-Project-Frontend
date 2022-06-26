@@ -44,12 +44,24 @@ export function createPost(newPost) {
   }
 }
 
-export function getPostsBySearch(searchQuery) {
+export function getPostsBySearch(searchQuery, page) {
   return async (dispatch) => {
-    console.log(searchQuery)
+    dispatch(setLoading(true))
+    // console.log(searchQuery)
     try {
-      const { data } = await api.getPostsBySearch(searchQuery)
+      const { data } = await api.getPostsBySearch(searchQuery, page)
       console.log('search results.........', data)
+      dispatch(setPosts(data.results))
+      let pageInfo = {}
+      pageInfo.totalPosts = data.totalPosts
+      if (data.next) {
+        pageInfo.next = data.next
+      }
+      if (data.previous) {
+        pageInfo.previous = data.previous
+      }
+      dispatch(setPageInfo(pageInfo))
+      dispatch(setLoading(false))
     } catch (error) {
       console.log('search result error...........', error)
     }

@@ -2,7 +2,7 @@ import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'
 import { BiFirstPage, BiLastPage } from 'react-icons/bi'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getPosts } from '../services/posts'
+import { getPosts, getPostsBySearch } from '../services/posts'
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom'
 import Pagination from 'react-js-pagination'
 
@@ -19,11 +19,26 @@ function PaginationComp() {
     : 1
 
   useEffect(() => {
-    dispatch(getPosts(currentPage))
+    console.log('location.....', location)
+    if (!location.search.includes('title')) dispatch(getPosts(currentPage))
+    else {
+      const searchQuery = {
+        title: searchParams.get('title'),
+        tags: searchParams.get('tags'),
+      }
+      dispatch(getPostsBySearch(searchQuery, currentPage))
+    }
   }, [location])
 
   const handlePageChange = (pageNumber) => {
     console.log(`active page is ${pageNumber}`)
+    if (searchParams.get('title')) {
+      navigate(
+        `/posts?page=${pageNumber}&title=${searchParams.get(
+          'title'
+        )}&tags=${searchParams.get('tags')}`
+      )
+    }
     navigate(`/posts?page=${pageNumber}`)
   }
 
