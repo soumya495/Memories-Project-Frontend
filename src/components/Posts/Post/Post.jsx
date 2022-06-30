@@ -94,7 +94,7 @@ function Post({ post }) {
         </div>
       </div>
       <div className='p-4 flex flex-col justify-between'>
-        {tags.length && (
+        {tags.length > 0 && (
           <div className='flex space-x-2 flex-wrap'>
             {tags.slice(0, 3).map((tag, index) => (
               <p key={index} className='text-sm text-gray-500 font-normal'>
