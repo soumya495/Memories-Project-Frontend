@@ -3,12 +3,15 @@ import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import { setEditPost } from '../../../slices/postsSlice'
 import { deletePost, updatePost } from '../../../services/posts'
 import { logUserOut } from '../../../slices/authSlice'
 import { checkUserToken } from '../../../services/checkUserToken'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import 'react-lazy-load-image-component/src/effects/blur.css'
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
@@ -66,15 +69,16 @@ function Post({ post }) {
 
   return (
     <div className='w-[95%] max-w-[280px] transparentCardBoost rounded-lg overflow-hidden shadow-lg'>
-      <div className='h-[140px] relative after:absolute after:z-40 after:contents-[``] after:top-0 after:left-0 after:w-full after:h-full after:bg-cardGradient'>
-        <img
+      <div className='h-[140px] relative after:absolute after:z-40 after:contents-[``] after:top-0 after:left-0 after:w-full after:h-full after:bg-cardGradient postImage'>
+        <LazyLoadImage
+          alt='post'
+          effect='blur'
           src={
             selectedFile !== ''
               ? selectedFile
               : '../../../../Assets/placeholder.webp'
           }
-          alt='post'
-          className='h-full w-full object-cover'
+          height='140px'
         />
         <div className='absolute flex justify-between items-center z-50 top-4 left-4 right-4'>
           <div className='text-white'>
@@ -101,9 +105,11 @@ function Post({ post }) {
           </div>
         )}
         <div className='my-2 h-[110px] flex flex-col space-y-2'>
-          <h4 className='font-semibold text-lg leading-5'>
-            {title.length > 30 ? `${title.substring(0, 30) + '...'}` : title}
-          </h4>
+          <Link to={`/post/${post._id}`}>
+            <h4 className='font-semibold text-lg leading-5 hover:underline hover:underline-offset-2'>
+              {title.length > 30 ? `${title.substring(0, 30) + '...'}` : title}
+            </h4>
+          </Link>
           <p className='text-gray-600 leading-5 break-words'>
             {message.length > 80
               ? `${message.substring(0, 80) + '...'}`

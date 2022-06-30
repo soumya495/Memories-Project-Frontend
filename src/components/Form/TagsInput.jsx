@@ -1,6 +1,6 @@
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 
-function TagsInput({ tagInputs, setTagInputs, user }) {
+function TagsInput({ tagInputs, setTagInputs, user, noAuth }) {
   // console.log('tag input value', tagInputs)
 
   const addTags = (e) => {
@@ -38,13 +38,22 @@ function TagsInput({ tagInputs, setTagInputs, user }) {
           ))}
         </div>
       )}
-      <input
-        type='text'
-        disabled={!user}
-        onChange={addTags}
-        placeholder='Tags (Space Separated)'
-        className='w-full p-1 bg-transparent placeholder:text-gray-700 outline-none'
-      />
+      {!noAuth ? (
+        <input
+          type='text'
+          disabled={!user}
+          onChange={addTags}
+          placeholder='Tags (Space Separated)'
+          className='w-full p-1 bg-transparent placeholder:text-gray-700 outline-none'
+        />
+      ) : (
+        <input
+          type='text'
+          onChange={addTags}
+          placeholder='Tags (Space Separated)'
+          className='w-full p-1 bg-transparent placeholder:text-gray-700 outline-none'
+        />
+      )}
     </div>
   )
 }

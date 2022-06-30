@@ -33,12 +33,12 @@ function Form() {
   })
 
   useEffect(() => {
-    if (!checkUserToken()) {
-      toast.info('Session Expired!')
-      dispatch(logUserOut())
-      return
-    }
     if (editPost) {
+      if (!checkUserToken()) {
+        toast.info('Session Expired!')
+        dispatch(logUserOut())
+        return
+      }
       console.log(editPost)
       setFormData({
         title: editPost.title,

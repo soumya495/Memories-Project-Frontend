@@ -9,10 +9,11 @@ import './App.css'
 
 import Navbar from './components/Navbar'
 import Home from './Pages/Home'
+import PostDetails from './Pages/PostDetails'
+import Auth from './Pages/Auth'
 
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import Auth from './Pages/Auth'
 import PrivateRoute from './PrivateRoute'
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Navigate to='/posts' />} />
           <Route path='/posts' element={<Home />} />
+          <Route path='/post/:id' element={<PostDetails />} />
           <Route path='/auth' element={<PrivateRoute />}>
             <Route path='/auth' element={<Auth />} />
           </Route>

@@ -36,7 +36,6 @@ function SearchForm() {
       <input
         type='search'
         placeholder='Search Memories'
-        disabled={!user}
         ref={inpRef}
         className='border-[1px] w-full border-slate-400 p-2 rounded-md bg-transparent placeholder:text-gray-700'
       />
@@ -44,9 +43,9 @@ function SearchForm() {
         tagInputs={tagInputs}
         setTagInputs={setTagInputs}
         user={user}
+        noAuth={true}
       />
       <button
-        disabled={!user}
         className='bg-blue-500 text-white w-full p-2 rounded-md'
         onClick={handleSearch}
       >

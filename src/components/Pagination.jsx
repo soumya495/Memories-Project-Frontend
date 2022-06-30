@@ -41,6 +41,8 @@ function PaginationComp() {
     } else {
       navigate(`/posts?page=${pageNumber}`)
     }
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
   }
 
   if (!pageInfo || !pageInfo.totalPosts) return null

@@ -27,6 +27,8 @@ export const getPostsBySearch = (searchQuery, page) =>
     }&limit=6&page=${page}`
   )
 
+export const getPost = (id) => API.get(`/posts/${id}`)
+
 export const updatePost = (updatedPost, id) =>
   API.patch(`/posts/${id}`, updatedPost)
 
