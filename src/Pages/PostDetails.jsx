@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLoading } from '../slices/loaderSlice'
 import Loader from '../components/Loader'
@@ -15,6 +15,7 @@ const timeAgo = new TimeAgo('en-US')
 function PostDetails() {
   const location = useLocation()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { loading } = useSelector((state) => state.loading)
   const [postData, setPostData] = useState(null)
   const postId = location.pathname.split('/')[2]
@@ -47,8 +48,11 @@ function PostDetails() {
     const { title, message, name, tags, selectedFile, createdAt } = postData
 
     return (
-      <div className='max-w-max mx-auto flex flex-col-reverse items-center md:flex-row md:items-start justify-between md:space-x-6 transparentCard p-6 mb-6'>
+      <div className='max-w-max mx-auto flex flex-col-reverse items-center md:flex-row md:items-start justify-between md:space-x-6 transparentCard p-6 mb-6 relative my-8'>
         {/* text */}
+        <p onClick={() => navigate(-1)} className='absolute -top-6 left-0'>
+          Go Back
+        </p>
         <div className='w-full mt-6 md:mt-0 md:w-[50%]'>
           <p className='text-2xl font-semibold'>{title}</p>
           {tags && (
