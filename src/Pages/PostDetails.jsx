@@ -27,7 +27,7 @@ function PostDetails() {
   const { loading } = useSelector((state) => state.loading)
   const { user } = useSelector((state) => state.auth)
   const [postData, setPostData] = useState(null)
-  console.log('post Id', postId)
+  // console.log('post Id', postId)
 
   const getPost = async () => {
     dispatch(setLoading(true))
@@ -35,9 +35,9 @@ function PostDetails() {
       const { data } = await api.getPost(postId)
       dispatch(setLoading(false))
       setPostData(data)
-      console.log('post data', data)
+      // console.log('post data', data)
     } catch (error) {
-      console.log('get post error', error)
+      // console.log('get post error', error)
       dispatch(setLoading(false))
     }
   }

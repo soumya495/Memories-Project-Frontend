@@ -19,7 +19,7 @@ function PaginationComp() {
     : 1
 
   useEffect(() => {
-    console.log('location.....', location)
+    // console.log('location.....', location)
     if (!location.search.includes('title')) dispatch(getPosts(currentPage))
     else {
       const searchQuery = {
@@ -31,7 +31,7 @@ function PaginationComp() {
   }, [location])
 
   const handlePageChange = (pageNumber) => {
-    console.log(`active page is ${pageNumber}`)
+    // console.log(`active page is ${pageNumber}`)
     if (searchParams.get('title')) {
       navigate(
         `/posts?page=${pageNumber}&title=${searchParams.get(

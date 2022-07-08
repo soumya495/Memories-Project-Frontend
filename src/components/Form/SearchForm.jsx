@@ -13,9 +13,9 @@ function SearchForm() {
   const navigate = useNavigate()
 
   const handleSearch = () => {
-    console.log('search - 1')
+    // console.log('search - 1')
     if (!inpRef.current.value && tagInputs.length === 0) return
-    console.log('search - 2')
+    // console.log('search - 2')
     const searchQuery = {
       title: inpRef.current.value,
       tags: tagInputs.join(','),
@@ -28,7 +28,7 @@ function SearchForm() {
     )
     inpRef.current.value = ''
     setTagInputs([])
-    console.log('search data.........', searchQuery)
+    // console.log('search data.........', searchQuery)
   }
 
   return (

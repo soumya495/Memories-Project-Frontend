@@ -8,7 +8,7 @@ function Navbar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   // const user = false
-  console.log(user)
+  // console.log(user)
 
   return (
     <nav className='flex justify-between items-center p-6 shadow-md my-6 rounded-lg transparentCard'>

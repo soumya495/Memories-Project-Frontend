@@ -10,7 +10,7 @@ function Posts() {
   const [searchParams, setSearchParams] = useSearchParams()
   const location = useLocation()
 
-  console.log('posts..........', posts)
+  // console.log('posts..........', posts)
 
   // const displaySearchResults = () => {
   //   let string = ''

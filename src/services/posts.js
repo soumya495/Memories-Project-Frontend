@@ -27,7 +27,7 @@ export function getPosts(pageNumber = 1) {
       dispatch(setPageInfo(pageInfo))
       dispatch(setLoading(false))
     } catch (error) {
-      console.log('get posts error............', error)
+      // console.log('get posts error............', error)
       dispatch(setLoading(false))
     }
   }
@@ -39,7 +39,7 @@ export function createPost(newPost) {
       const { data } = await api.createPost(newPost)
       dispatch(addNewPost(data))
     } catch (error) {
-      console.log('create post error...........', error)
+      // console.log('create post error...........', error)
     }
   }
 }
@@ -50,7 +50,7 @@ export function getPostsBySearch(searchQuery, page) {
     // console.log(searchQuery)
     try {
       const { data } = await api.getPostsBySearch(searchQuery, page)
-      console.log('search results.........', data)
+      // console.log('search results.........', data)
       dispatch(setPosts(data.results))
       let pageInfo = {}
       pageInfo.totalPosts = data.totalPosts
@@ -63,7 +63,7 @@ export function getPostsBySearch(searchQuery, page) {
       dispatch(setPageInfo(pageInfo))
       dispatch(setLoading(false))
     } catch (error) {
-      console.log('search result error...........', error)
+      // console.log('search result error...........', error)
     }
   }
 }
@@ -74,7 +74,7 @@ export function updatePost(updatedPost, id) {
       const { data } = await api.updatePost(updatedPost, id)
       dispatch(setUpdatePost(data))
     } catch (error) {
-      console.log('update post error...........', error)
+      // console.log('update post error...........', error)
     }
   }
 }
@@ -85,7 +85,7 @@ export function deletePost(id) {
       api.deletePost(id)
       dispatch(setDeletedPost(id))
     } catch (error) {
-      console.log('delete post error............ ', error)
+      // console.log('delete post error............ ', error)
     }
   }
 }

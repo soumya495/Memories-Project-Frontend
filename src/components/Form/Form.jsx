@@ -39,7 +39,7 @@ function Form() {
         dispatch(logUserOut())
         return
       }
-      console.log(editPost)
+      // console.log(editPost)
       setFormData({
         title: editPost.title,
         message: editPost.message,
@@ -82,7 +82,7 @@ function Form() {
       toast.error('You are not Logged In!')
       return
     }
-    console.log(formData)
+    // console.log(formData)
 
     // checks if login token is still valid
     if (!checkUserToken()) {
@@ -136,7 +136,7 @@ function Form() {
           })
           .catch((err) => {
             dispatch(setLoading(false))
-            console.log('Cloudinary upload error.........', err)
+            // console.log('Cloudinary upload error.........', err)
           })
       }
     } else {
@@ -180,7 +180,7 @@ function Form() {
         .catch((err) => {
           dispatch(setLoading(false))
           toast.error('Something Went Wrong!')
-          console.log('Cloudinary upload error.........', err)
+          // console.log('Cloudinary upload error.........', err)
         })
     }
   }

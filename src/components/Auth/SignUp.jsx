@@ -33,7 +33,7 @@ function SignUp() {
       toast.error('Passwords Do Not Match!')
       return
     }
-    console.log('Sign Up Data.............', formData)
+    // console.log('Sign Up Data.............', formData)
     dispatch(signUp(formData, navigate))
   }
 
